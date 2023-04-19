@@ -45,10 +45,10 @@ def login():
     if(email==usuarios[var_user]["email"]):
       if(password==usuarios[var_user]["password"]):
         print("Bienvenido "+str(usuarios[var_user]["nombre"]))
-    
+
 nuevo_cliente()
 login()
-    
+
 folder_read = open(folder, 'r')
 usuarios = folder_read.read()
 usuarios = ast.literal_eval(usuarios)
