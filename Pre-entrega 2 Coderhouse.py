@@ -6,6 +6,7 @@ print(folder)
 
 global datos
 global usuarios
+usuarios=[]
 
 class clientes:
   def __init__(self,nombre="",email="",password=""):
@@ -24,7 +25,13 @@ class clientes:
   def mensaje_bienvenida(self):
     return "Sea Bienvenido "+str(self.nombre_)+" a esta pagina."
 
-usuarios={}
+def leer():
+  folder_read = open(folder, 'r')
+  usuarios = folder_read.read()
+  usuarios = ast.literal_eval(usuarios)
+  folder_read.close()
+  return usuarios
+
 def nuevo_cliente():
   nombre=input("Ingrese su nombre: ")
   email=input("Ingrese su Email: ")
@@ -33,7 +40,7 @@ def nuevo_cliente():
   if(dic_usuario["nombre"].__len__() > 0 and dic_usuario["email"].__len__() > 0 and dic_usuario["password"].__len__() > 0 ):
     cliente=clientes()
     cliente.agregar_cliente(nombre,email,password)
-    usuarios[cliente] = cliente.obtener_cliente()
+    usuarios.append(cliente.obtener_cliente())
     print(str(cliente.__str__())+"Fue creado con Exito. ")
   else:
     print("Faltan datos por ingresa. ")
@@ -42,15 +49,26 @@ def login():
   email=input("Ingrese su Email: ")
   password=input("Ingrese su password: ")
   for var_user in usuarios:
-    if(email==usuarios[var_user]["email"]):
-      if(password==usuarios[var_user]["password"]):
-        print("Bienvenido "+str(usuarios[var_user]["nombre"]))
+    if(email==var_user["email"]):
+      if(password==var_user["password"]):
+        print("Bienvenido "+str(var_user["nombre"]))
+      else:
+        print(" Password Incorrecta  ")
 
+def guardar(usuarios):
+  folder_read = open(folder, 'w')
+  folder_read.write(str(usuarios))
+  folder_read.close()
+
+
+print("----------- Leyendo usuarios -----------")
+usuarios = leer()
+print("----------- Registro de usuario -----------")
 nuevo_cliente()
+print("----------- Login de usuario -----------")
 login()
-
-folder_read = open(folder, 'r')
-usuarios = folder_read.read()
-usuarios = ast.literal_eval(usuarios)
-folder_read.close()
+print("----------- Informacion de usuario -----------")
 print(usuarios)
+print("----------- Guardar usuario -----------")
+guardar(usuarios)
+
